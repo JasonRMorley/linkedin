@@ -110,25 +110,39 @@ class LinkedinBot:
                 return True
 
     def process_jobs(self):
-        job_title = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(
-            (By.CSS_SELECTOR, "div.job-details-jobs-unified-top-card__job-title h1 a"))
-        ).text
-        if self.check_job(job_title):
-
-            try:
-                WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(
-                    (By.CSS_SELECTOR, "div.jobs-company__box div#ember1514 button.follow"))
-                ).click()
-                print(f"{job_title} job followed")
-            except Exception as e:
-                print(f"failed to follow job\n{e}")
-
-        else:
-            print("job title does not match target job titles")
-            pass
         job_listings = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located(
-            (By.CSS_SELECTOR, f"ul.scaffold-layout__list-container li")
+            (By.CSS_SELECTOR, ".job-card-container--clickable")
         ))
+
+        for job in job_listings:
+            follow_button = job.find_elements(By.TAG_NAME, "button")
+            print(follow_button)
+            for button in follow_button:
+                print(button)
+                button.click()
+
+            # WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(
+            #     (By.CSS_SELECTOR, ".job-card-container--clickable")
+            # )).click()
+
+
+        # job_title = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(
+        #     (By.CSS_SELECTOR, "div.job-details-jobs-unified-top-card__job-title h1 a"))
+        # ).text
+        # if self.check_job(job_title):
+        #
+        #     try:
+        #         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(
+        #             (By.CSS_SELECTOR, "div.jobs-company__box div#ember1514 button.follow"))
+        #         ).click()
+        #         print(f"{job_title} job followed")
+        #     except Exception as e:
+        #         print(f"failed to follow job\n{e}")
+        #
+        # else:
+        #     print("job title does not match target job titles")
+        #     pass
+
 
 
 
